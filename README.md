@@ -1,6 +1,6 @@
 # AaP
 
-AaP is an app that reveals adoptable animals in a given region via pet card components. The site is available across all modern browsers and responsive down to mobile.
+AaP is a site that reveals adoptable animals in a given region via pet card components. It is available across all modern browsers and responsive down to mobile.
 
 
 ## Instructions
