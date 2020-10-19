@@ -1,6 +1,5 @@
 <!DOCTYPE HTML>
 <html>
-
     <head>
         <title>AaP</title> <!-- tab title -->
         <link type="text/css" rel="stylesheet" href="css/reset.css" /> <!-- vanilla flavoring css -->
@@ -10,25 +9,30 @@
         <script nomodule src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine-ie11.min.js" defer></script> <!-- alpine for ie -->
         <script src="js/script.js"></script> <!-- custom js -->
     </head>
-
     <body>
         <section id="wrapper">
 
+            <!-- page -->
             <section id="pageContainer">
+                <!-- dropdown filter -->
                 <div id="filterContainer" x-data="filter()" x-init="$watch('selectedFilter', function(){})" :class="{ 'active': droppedDown }">
+                    <!-- dropdown -->
                     <div id="filter" @click="droppedDown = !droppedDown" @click.away ="droppedDown = false">
+                        <!-- left side labels -->
                         <div class="labelsContainer">
                             <div class="sublabel" x-show.transition="selectedFilter != 'Filter'">Filter</div>
                             <div class="mainLabel" x-text="selectedFilter" :class="{ 'active': selectedFilter !== 'Filter' }"></div>
                         </div>
+                        <!-- right side label and icon -->
                         <div class="hintsContainer">
                             <!-- "select field with selected item" from comp -->
                             <div class="optionalLabel optional" x-show.transition="selectedFilter != 'Filter'">Optional</div>
                             <div class="icon dropdownIcon"></div>
                         </div>
                     </div>
+                    <!-- dropdown items -->
                     <div id="filterItems">
-                        <!-- note: topmost filter item simply for resetting demo  -->
+                        <!-- note: topmost filter item simply for resetting demo -->
                         <div class="filterItem" @click="$dispatch('select-filter', { dropdownFilter: 'Filter' }); selectedFilter = 'Filter'" :class="{ 'active': selectedFilter == 'Filter' }">
                             <div class="label">Filter</div>
                         </div>
@@ -46,17 +50,20 @@
                         </div>
                     </div>
                 </div>
+                <!-- pet cards -->
                 <div id="cardsContainer"
                     x-data="petsData()"
                     x-init="getPets()"
                     @select-filter.window="dropdownSelected = $event.detail.dropdownFilter">
 
+                    <!-- generates all cards dynamically -->
                     <template x-for="pet in pets" :key="pet">
-                        <div class="card"  @click.away="if(detailed === pet.result.details.pet_id) { detailed = null }" x-show=
-                                                            "(dropdownSelected === 'Act quickly' && pet.result.details.act_quickly) ||
-                                                             (dropdownSelected === 'Special needs' && pet.result.details.special_needs ) || 
-                                                             (dropdownSelected === 'Adopted' && pet.result.details.adopted) ||
-                                                             (dropdownSelected === 'Filter')">
+                        <div class="card" @click.away="if(detailed === pet.result.details.pet_id) { detailed = null }" x-show=
+                                                    "(dropdownSelected === 'Act quickly' && pet.result.details.act_quickly) ||
+                                                     (dropdownSelected === 'Special needs' && pet.result.details.special_needs ) || 
+                                                     (dropdownSelected === 'Adopted' && pet.result.details.adopted) ||
+                                                     (dropdownSelected === 'Filter')">
+                            <!-- pet image -->
                             <div class="portrait">
                                 <img x-bind:src="pet.large_results_photo_url"/>
                                 <div class="banner act" :class="{ 'active': pet.result.details.act_quickly }">
@@ -66,6 +73,7 @@
                                     <h5 class="label">Adopted</h5>
                                 </div>
                             </div>
+                            <!-- pet copy -->
                             <div class="petadata">
                                 <h2 class="name shorten" x-text="pet.result.name"></h2>
                                 <h4 class="breed shorten" x-text="pet.result.breed"></h4>
@@ -74,7 +82,7 @@
                                 </h6>
                                 <h6 class="location" x-text="pet.result.location"></h6>
                             </div>
-                            <div class="icons">
+                            <div class="interestedIcons">
                                 <div class="icon heartIcon" @click="pet.result.favourited = !pet.result.favourited; detailed = null" :class="{ 'active': pet.result.favourited }"></div>
                                 <div class="icon infoIcon" @click="detailed = pet.result.details.pet_id" :class="{ 'active': detailed === pet.result.details.pet_id }">
                                     <div class="animationContainer grey"></div>
@@ -83,6 +91,7 @@
                                 </div>
                             </div>
 
+                            <!-- additional details -->
                             <div class="details" :class="{ 'active': detailed === pet.result.details.pet_id }">
 
                                 <div class="contentContainer">

@@ -4,6 +4,7 @@ $brandBlue2:#0099B8;
 $brandYellow:#FFCC1B;
 $brandGrey:#B3B3B3;
 
+
 //modules
 @import "modules";
 
@@ -23,6 +24,8 @@ html {
   font-family:SoleilRegular;
 }
 
+
+//text styles
 h2 {
   color:$brandBlue;
   font-size:3.2em;
@@ -44,7 +47,7 @@ h6 { //also h4 tho?
   font-size:2.0em;
   line-height:1.3;
   font-family:SoleilLight; 
-  font-weight: 300;
+  font-weight:300;
 }
 
 h5 { 
@@ -56,7 +59,7 @@ h5 {
 }
 
 
-//elements
+//page elements
 #wrapper {
   position:absolute;
   top:0px;
@@ -76,6 +79,7 @@ h5 {
   }
 }
 
+//filter dropdown
 #filterContainer {
   position:relative;
   width:100%;
@@ -113,6 +117,7 @@ h5 {
     }
   }
 
+  //filter
   #filter {
     position:relative;
     width:36.8em;
@@ -179,9 +184,9 @@ h5 {
         }
       }
     }
-
   }
 
+  //dropdown
   #filterItems {
     position:absolute;
     width:36.8em;
@@ -254,6 +259,7 @@ h5 {
   }
 }
 
+//pet cards
 #cardsContainer {
   position:relative;
   height:auto;
@@ -265,13 +271,14 @@ h5 {
   flex-grow:1;
   overflow:auto;
   //hide scrollbar (to account for manual mouse scrollbar appearing and pushing content)
-  -ms-overflow-style: none;  //IE and Edge
-  scrollbar-width: none;  //Firefox
+  -ms-overflow-style:none;  //IE and Edge
+  scrollbar-width:none;  //Firefox
 
   &::-webkit-scrollbar {
-    display: none;
+    display:none;
   }
 
+  //individual card
   .card {
     position:relative;
     width:36.7em;
@@ -287,6 +294,7 @@ h5 {
       box-shadow:.0em .2em .2em rgba(106, 106, 106, 0.14);
     }
 
+    //beauty shot
     .portrait {
       position:relative;
       width:100%;
@@ -300,6 +308,7 @@ h5 {
         width:100%;
       }
 
+      //pet stat alerts
       .banner {
         position:absolute;
         bottom:.0em;
@@ -321,6 +330,7 @@ h5 {
         &.act {
           background-color:$brandYellow;
         }
+
         &.adopted {
           background-color:$brandBlue;
 
@@ -335,16 +345,18 @@ h5 {
       }
     }
 
+    //metadata about pet
     .petadata {
       position:relative;
       width:100%;
-      padding:1.5em 2.5em .0em 2.5em;
+      padding:1.5em 2.5em 0.0em 2.5em;
       box-sizing:border-box;
       flex-grow:0;
       flex-shrink:0;
       flex-basis:calc(100% - 63%);
       cursor:default;
 
+      //truncates text and adds "..." to end
       .shorten {
         white-space:nowrap;
         overflow:hidden;
@@ -358,25 +370,23 @@ h5 {
           color:red;
         }
       }
-
-      .location {
-        
-      }
     }
 
-    .icons {
+    //icons for favouriting and finding out more info
+    .interestedIcons {
       position:absolute;
       top:2.0em;
       right:2.0em;
       @include column();
 
+      // favouriting
       .icon {
         transition:background-image 0.5s ease;
 
         &.heartIcon {
           width:2.5em;
           height:2.5em;
-          margin-bottom: 0.2em;
+          margin-bottom:0.2em;
           background-image:url(../img/heart_not_favourited.png);
 
           &.active,
@@ -384,6 +394,8 @@ h5 {
             background-image:url(../img/heart_favourited.png);
           }
         }
+
+        // finding out more info
         &.infoIcon {
           width:2.3em;
           height:2.3em;
@@ -446,6 +458,7 @@ h5 {
   }
 }
 
+//further info
 .details {
   position:absolute;
   top:0em;
@@ -521,9 +534,10 @@ h5 {
 
             .copy {
               height:16.4em;
-              margin-top:0.35em; //hack; sorry
+              margin-top:0.35em; //hack, since oddly not lining up as other details did; sorry
               overflow:hidden;
 
+              //overflow gradient for when text too long
               &:after {
                 content:"";
                 position:absolute;
@@ -556,6 +570,7 @@ h5 {
         }
       }
 
+      //learn more button
       &.buttonContainer {
         padding-left:2.7em;
         padding-right:2.7em;
@@ -573,23 +588,21 @@ h5 {
           position:relative;
           padding:0.1em;
           box-sizing:border-box;
-          margin-top: 2.8em;
+          margin-top:2.8em;
           @include row();
-          justify-content: flex-start;
+          justify-content:flex-start;
 
           .label {
             color:white;
-            margin-right: 1em;
-            line-height: 1.125;
+            margin-right:1em;
+            line-height:1.125;
           }
 
           .icon {
             &.arrowIcon {
-              width: 0.74em;
-              height: 1.2em;
-              // box-sizing:border-box;
+              width:0.74em;
+              height:1.2em;
               background-image:url(../img/arrow.png);
-              // background-size:contain;
             }
           }
         }
@@ -599,6 +612,7 @@ h5 {
   }
 }
 
+//icons throughout app
 .icon {
   position:relative;
   @include contain();
@@ -606,27 +620,26 @@ h5 {
 
 
 //animations
+//brings user's attention to cards with unique banners
 @keyframes pulse {
   0% {
-      transform:scale(1);
+    transform:scale(1);
   }
   7% {
-      transform:scale(1.15);
+    transform:scale(1.15);
   }
   14% {
-      transform:scale(1);
+    transform:scale(1);
   }
   100% {
-      transform:scale(1);
+    transform:scale(1);
   }
 }
 
 
-
 //breakpoints 
 
-
-//desktop (smaller)
+//desktop (smaller than typical above)
 //l
 @media screen and (max-width:1175px) {
 
@@ -634,7 +647,7 @@ h5 {
     font-size:7.5px;
 
     .card {
-      .icons {
+      .interestedIcons {
         top:1.3em;
         right:1.3em;
       }
@@ -663,7 +676,7 @@ h5 {
 
 //mobile
 //xs
-@media screen and (max-width:767px) {
+@media screen and (max-width:767px) { //lots of changes to design from above breakpoints (font and padding/margin sizes, primarily, with some layout differences)
 
   #wrapper {
     #pageContainer {
@@ -682,6 +695,11 @@ h5 {
       padding:16px;
 
       .labelsContainer {
+        .sublabel {
+          font-size:12px;
+          font-family:"SoleilRegular";
+          font-weight:400;
+        }
 
         .mainLabel {
           font-size:18px;
@@ -692,6 +710,12 @@ h5 {
       }
 
       .hintsContainer {
+        .optionalLabel {
+          font-size:12px;
+          font-family:"SoleilRegular";
+          font-weight:400;
+        }
+
         .icon.dropdownIcon {
           width:13px;
           height:13px;
@@ -704,10 +728,10 @@ h5 {
       font-size:1.6em;
 
       .filterItem {
-        padding: 0.4em 1.8em;
+        padding:0.4em 1.8em;
 
         .label {
-          font-size: 1.8em;
+          font-size:1.8em;
         }
       }
     }
@@ -715,7 +739,7 @@ h5 {
 
   #cardsContainer {
     width:320px;
-    flex-grow: unset;
+    flex-grow:unset;
 
     .card {
       width:100%;
@@ -733,11 +757,11 @@ h5 {
         }
 
         .banner {
-          height: 25px;
+          height:25px;
 
           .label {
-            font-family: 'SoleilRegular';
-            font-size: 12px;
+            font-family:'SoleilRegular';
+            font-size:12px;
           }
         }
       }
@@ -747,8 +771,9 @@ h5 {
         height:100%;
         flex-basis:calc(100% - 42%);
         padding:14px 37px 30px 14px; //padding:14px 21px 30px 14px;
-        max-width: 29.9em; //helps ff browser not overflow container without forming ...
+        max-width:29.9em; //helps Firefox browser not overflow container without forming "...""
 
+        //fencepost in this breakpoint only; instead of gradient, truncates text and adds "..." to end
         .stats {
           margin-top:14px;
           font-weight:300;
@@ -758,23 +783,19 @@ h5 {
         }
       }
 
-      .icons {
-        top: 10px;
-        right: 10px;
+      .interestedIcons {
+        top:10px;
+        right:10px;
 
         .icon {
           &.heartIcon {
-            width: 24px;
-            height: 24px;
-            // width:19px;
-            // height:19px;
-            margin-bottom: 3px;
+            width:24px; //width:19px;
+            height:24px; //height:19px;
+            margin-bottom:3px;
           }
           &.infoIcon {
-            width: 22px;
-            height: 22px;
-            // width:17px;
-            // height:17px;
+            width:22px; //width:17px;
+            height:22px; //height:17px;
           }
         }
       }
@@ -849,11 +870,11 @@ h5 {
               width:12px;
               height:12px;
             }
-
           }
-
         }
+
       }
+
     }
   }
 

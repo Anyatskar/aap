@@ -323,7 +323,7 @@ h5 {
 #cardsContainer .card .petadata .stats .extra {
   color: red;
 }
-#cardsContainer .card .icons {
+#cardsContainer .card .interestedIcons {
   position: absolute;
   top: 2em;
   right: 2em;
@@ -332,37 +332,37 @@ h5 {
   justify-content: center;
   align-items: center;
 }
-#cardsContainer .card .icons .icon {
+#cardsContainer .card .interestedIcons .icon {
   transition: background-image 0.5s ease;
 }
-#cardsContainer .card .icons .icon.heartIcon {
+#cardsContainer .card .interestedIcons .icon.heartIcon {
   width: 2.5em;
   height: 2.5em;
   margin-bottom: 0.2em;
   background-image: url(../img/heart_not_favourited.png);
 }
-#cardsContainer .card .icons .icon.heartIcon.active, #cardsContainer .card .icons .icon.heartIcon:hover {
+#cardsContainer .card .interestedIcons .icon.heartIcon.active, #cardsContainer .card .interestedIcons .icon.heartIcon:hover {
   background-image: url(../img/heart_favourited.png);
 }
-#cardsContainer .card .icons .icon.infoIcon {
+#cardsContainer .card .interestedIcons .icon.infoIcon {
   width: 2.3em;
   height: 2.3em;
 }
-#cardsContainer .card .icons .icon.infoIcon.active .animationContainer {
+#cardsContainer .card .interestedIcons .icon.infoIcon.active .animationContainer {
   transform: scale(55);
 }
-#cardsContainer .card .icons .icon.infoIcon.active .animationContainer.blue {
+#cardsContainer .card .interestedIcons .icon.infoIcon.active .animationContainer.blue {
   background-color: #0099B8;
   opacity: 1;
 }
-#cardsContainer .card .icons .icon.infoIcon.active .animationContainer.grey {
+#cardsContainer .card .interestedIcons .icon.infoIcon.active .animationContainer.grey {
   background-color: grey;
 }
-#cardsContainer .card .icons .icon.infoIcon.active .iIcon {
+#cardsContainer .card .interestedIcons .icon.infoIcon.active .iIcon {
   opacity: 0;
   pointer-events: none;
 }
-#cardsContainer .card .icons .icon.infoIcon .animationContainer {
+#cardsContainer .card .interestedIcons .icon.infoIcon .animationContainer {
   position: absolute;
   top: 0em;
   right: 0em;
@@ -373,14 +373,14 @@ h5 {
   transform: scale(0);
   transition: transform 0.6s ease, opacity 0.6s ease-in-out;
 }
-#cardsContainer .card .icons .icon.infoIcon .animationContainer.blue {
+#cardsContainer .card .interestedIcons .icon.infoIcon .animationContainer.blue {
   background-color: #0099B8;
   opacity: 0;
 }
-#cardsContainer .card .icons .icon.infoIcon .animationContainer.grey {
+#cardsContainer .card .interestedIcons .icon.infoIcon .animationContainer.grey {
   background-color: grey;
 }
-#cardsContainer .card .icons .icon.infoIcon .iIcon {
+#cardsContainer .card .interestedIcons .icon.infoIcon .iIcon {
   position: absolute;
   top: 0em;
   right: 0em;
@@ -557,7 +557,7 @@ h5 {
   #wrapper {
     font-size: 7.5px;
   }
-  #wrapper .card .icons {
+  #wrapper .card .interestedIcons {
     top: 1.3em;
     right: 1.3em;
   }
@@ -588,10 +588,20 @@ h5 {
     height: 58px;
     padding: 16px;
   }
+  #filterContainer #filter .labelsContainer .sublabel {
+    font-size: 12px;
+    font-family: "SoleilRegular";
+    font-weight: 400;
+  }
   #filterContainer #filter .labelsContainer .mainLabel {
     font-size: 18px;
     line-height: 26px;
     font-family: SoleilLight;
+    font-weight: 400;
+  }
+  #filterContainer #filter .hintsContainer .optionalLabel {
+    font-size: 12px;
+    font-family: "SoleilRegular";
     font-weight: 400;
   }
   #filterContainer #filter .hintsContainer .icon.dropdownIcon {
@@ -651,16 +661,16 @@ h5 {
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  #cardsContainer .card .icons {
+  #cardsContainer .card .interestedIcons {
     top: 10px;
     right: 10px;
   }
-  #cardsContainer .card .icons .icon.heartIcon {
+  #cardsContainer .card .interestedIcons .icon.heartIcon {
     width: 24px;
     height: 24px;
     margin-bottom: 3px;
   }
-  #cardsContainer .card .icons .icon.infoIcon {
+  #cardsContainer .card .interestedIcons .icon.infoIcon {
     width: 22px;
     height: 22px;
   }
