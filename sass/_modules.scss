@@ -1,0 +1,44 @@
+//flexbox
+
+@mixin column () {
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items:center;
+}
+
+@mixin row () {
+	display:flex;
+	flex-direction:row;
+	justify-content:center;
+	align-items:center;
+}
+
+
+//imgs
+
+@mixin contain() {
+	background-size:contain;
+	background-repeat:no-repeat;
+	background-position:center;
+}
+
+
+// //multiline text truncating
+
+// @mixin multiLineEllipsis($lineHeight:1.2, $lineCount:1) {
+//   overflow:hidden;
+//   position:relative;
+//   line-height:$lineHeight;
+//   max-height:$lineHeight * $lineCount + em; 
+//   // text-align:justify; //note: not sure which is preferred
+//   margin-right:-1em;
+//   padding-right:2em;
+
+//   &:before {
+//     content:'...';
+//     position:absolute;
+//     right:1em;
+//     bottom:0em;
+//   }
+// }

@@ -1,0 +1,742 @@
+html,
+body {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+}
+
+html {
+  font-size: 100px;
+  font-family: SoleilRegular;
+}
+
+h2 {
+  color: #00BFDA;
+  font-size: 3.2em;
+  line-height: 1.25;
+  font-family: SoleilExtraBold;
+  font-weight: 800;
+}
+
+h4 {
+  color: black;
+  font-size: 2em;
+  line-height: 1.6;
+  font-family: SoleilBold;
+  font-weight: 700;
+}
+
+h6 {
+  color: black;
+  font-size: 2em;
+  line-height: 1.3;
+  font-family: SoleilLight;
+  font-weight: 300;
+}
+
+h5 {
+  color: black;
+  font-size: 1.6em;
+  line-height: 1.9;
+  font-family: SoleilBold;
+  font-weight: 700;
+}
+
+#wrapper {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+}
+#wrapper #pageContainer {
+  position: relative;
+  width: 117.3em;
+  max-width: 140em;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#filterContainer {
+  position: relative;
+  width: 100%;
+  padding: 0em 1.2em;
+  box-sizing: border-box;
+  margin-top: 9em;
+  margin-bottom: 4em;
+  flex-shrink: 0;
+  z-index: 9;
+}
+#filterContainer.active #filter .optionalLabel {
+  opacity: 0;
+  pointer-events: none;
+}
+#filterContainer.active #filter .sublabel {
+  display: none;
+}
+#filterContainer.active .dropdownIcon {
+  transform: rotate(180deg);
+}
+#filterContainer.active #filterItems {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(0em, 1em);
+}
+#filterContainer.active #filterItems .filterItem:first-child {
+  color: #B3B3B3;
+}
+#filterContainer #filter {
+  position: relative;
+  width: 36.8em;
+  height: 5.8em;
+  border-radius: 0.6em;
+  padding-top: 0.4em;
+  padding-bottom: 0.6em;
+  padding-left: 1.6em;
+  padding-right: 1em;
+  border: 1px solid #B3B3B3;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
+}
+#filterContainer #filter .labelsContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-items: flex-start;
+}
+#filterContainer #filter .labelsContainer .sublabel {
+  position: relative;
+  color: #B3B3B3;
+  font-size: 1.4em;
+  line-height: 1.6;
+  font-family: "SoleilBold";
+  font-weight: 700;
+}
+#filterContainer #filter .labelsContainer .mainLabel {
+  position: relative;
+  color: #B3B3B3;
+  font-size: 2em;
+  line-height: 1.3;
+}
+#filterContainer #filter .labelsContainer .mainLabel.active {
+  color: black;
+}
+#filterContainer #filter .hintsContainer {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+#filterContainer #filter .hintsContainer .optionalLabel {
+  position: relative;
+  color: #B3B3B3;
+  margin-right: 1.1em;
+  font-size: 1.4em;
+  line-height: 1.6;
+  font-family: "SoleilBold";
+  font-weight: 700;
+  transition: opacity 0.4s ease;
+}
+#filterContainer #filter .hintsContainer .icon {
+  width: 1.3em;
+  height: 1.3em;
+  transition: transform 0.4s ease;
+  will-change: transform;
+}
+#filterContainer #filter .hintsContainer .icon.dropdownIcon {
+  background-image: url(../img/dropdown.png);
+}
+#filterContainer #filterItems {
+  position: absolute;
+  width: 36.8em;
+  background-color: white;
+  border-radius: 0.6em;
+  padding: 1em 0em;
+  border: 1px solid #DFDFDF;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px #B3B3B3;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+#filterContainer #filterItems .filterItem {
+  position: relative;
+  width: 100%;
+  height: auto;
+  padding: 0.8em 1.6em;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
+}
+#filterContainer #filterItems .filterItem:hover {
+  background-color: #F2F2F2;
+}
+#filterContainer #filterItems .filterItem:hover .label {
+  font-family: "SoleilRegular";
+  font-weight: normal;
+}
+#filterContainer #filterItems .filterItem.active:not(:first-child) .label {
+  color: #00BFDA;
+}
+#filterContainer #filterItems .filterItem.active .icon.checkmarkIcon {
+  opacity: 1;
+}
+#filterContainer #filterItems .filterItem .label {
+  position: relative;
+  font-size: 2em;
+  line-height: 1.3;
+  font-family: "SoleilLight";
+  pointer-events: none;
+}
+#filterContainer #filterItems .filterItem .icon {
+  width: 1.3em;
+  height: 1.3em;
+  transition: transform 0.4s ease;
+  will-change: transform;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+#filterContainer #filterItems .filterItem .icon.checkmarkIcon {
+  background-image: url(../img/checkmark.png);
+}
+
+#cardsContainer {
+  position: relative;
+  height: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  overflow: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+#cardsContainer::-webkit-scrollbar {
+  display: none;
+}
+#cardsContainer .card {
+  position: relative;
+  width: 36.7em;
+  height: 55.6em;
+  margin: 0em 1.2em 2.4em 1.2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0em 0.4em 1em rgba(106, 106, 106, 0.19);
+  border-radius: 0.2em;
+  overflow: hidden;
+}
+#cardsContainer .card:hover {
+  background-color: #F9F9F9;
+  box-shadow: 0em 0.2em 0.2em rgba(106, 106, 106, 0.14);
+}
+#cardsContainer .card .portrait {
+  position: relative;
+  width: 100%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 63%;
+  overflow: hidden;
+}
+#cardsContainer .card .portrait img {
+  position: absolute;
+  width: 100%;
+}
+#cardsContainer .card .portrait .banner {
+  position: absolute;
+  bottom: 0em;
+  width: 100%;
+  height: 3em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform;
+  transform-origin: bottom;
+  transition: transform 0.5s ease;
+  animation: pulse 4s infinite ease-in-out 1s;
+}
+#cardsContainer .card .portrait .banner.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+#cardsContainer .card .portrait .banner.act {
+  background-color: #FFCC1B;
+}
+#cardsContainer .card .portrait .banner.adopted {
+  background-color: #00BFDA;
+}
+#cardsContainer .card .portrait .banner.adopted .label {
+  color: white;
+}
+#cardsContainer .card .portrait .banner .label {
+  position: relative;
+}
+#cardsContainer .card .petadata {
+  position: relative;
+  width: 100%;
+  padding: 1.5em 2.5em 0em 2.5em;
+  box-sizing: border-box;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: calc(100% - 63%);
+  cursor: default;
+}
+#cardsContainer .card .petadata .shorten {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#cardsContainer .card .petadata .stats {
+  margin-top: 1em;
+}
+#cardsContainer .card .petadata .stats .extra {
+  color: red;
+}
+#cardsContainer .card .icons {
+  position: absolute;
+  top: 2em;
+  right: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#cardsContainer .card .icons .icon {
+  transition: background-image 0.5s ease;
+}
+#cardsContainer .card .icons .icon.heartIcon {
+  width: 2.5em;
+  height: 2.5em;
+  margin-bottom: 0.2em;
+  background-image: url(../img/heart_not_favourited.png);
+}
+#cardsContainer .card .icons .icon.heartIcon.active, #cardsContainer .card .icons .icon.heartIcon:hover {
+  background-image: url(../img/heart_favourited.png);
+}
+#cardsContainer .card .icons .icon.infoIcon {
+  width: 2.3em;
+  height: 2.3em;
+}
+#cardsContainer .card .icons .icon.infoIcon.active .animationContainer {
+  transform: scale(55);
+}
+#cardsContainer .card .icons .icon.infoIcon.active .animationContainer.blue {
+  background-color: #0099B8;
+  opacity: 1;
+}
+#cardsContainer .card .icons .icon.infoIcon.active .animationContainer.grey {
+  background-color: grey;
+}
+#cardsContainer .card .icons .icon.infoIcon.active .iIcon {
+  opacity: 0;
+  pointer-events: none;
+}
+#cardsContainer .card .icons .icon.infoIcon .animationContainer {
+  position: absolute;
+  top: 0em;
+  right: 0em;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: scale(0);
+  transition: transform 0.6s ease, opacity 0.6s ease-in-out;
+}
+#cardsContainer .card .icons .icon.infoIcon .animationContainer.blue {
+  background-color: #0099B8;
+  opacity: 0;
+}
+#cardsContainer .card .icons .icon.infoIcon .animationContainer.grey {
+  background-color: grey;
+}
+#cardsContainer .card .icons .icon.infoIcon .iIcon {
+  position: absolute;
+  top: 0em;
+  right: 0em;
+  width: 100%;
+  height: 100%;
+  background-image: url(../img/info.png);
+  background-size: 88%;
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.5s ease;
+}
+
+.details {
+  position: absolute;
+  top: 0em;
+  left: 0em;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+.details.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.details.active .contentContainer {
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: 0.25s;
+  transform: translate(0em, 0em);
+}
+.details .icon.closeIcon {
+  position: absolute;
+  top: 0em;
+  right: 0em;
+  width: 2.2em;
+  height: 2.2em;
+  margin-top: 2em;
+  margin-right: 2em;
+  background-image: url(../img/close.png);
+}
+.details .contentContainer {
+  position: absolute;
+  top: 0em;
+  left: 0em;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-items: flex-start;
+  justify-content: space-between;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(0em, 1.5em);
+  transition: opacity 0.5s ease 0s, transform 0.5s ease;
+}
+.details .contentContainer .container {
+  position: relative;
+  width: 100%;
+}
+.details .contentContainer .container.copyContainer {
+  position: relative;
+  padding: 6.2em 2.7em 2.5em 2.7em;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-items: flex-start;
+}
+.details .contentContainer .container.copyContainer .detail {
+  position: relative;
+  width: 100%;
+  margin-bottom: 2.5em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.details .contentContainer .container.copyContainer .detail:last-child {
+  margin-bottom: 0em;
+}
+.details .contentContainer .container.copyContainer .detail.story {
+  align-items: flex-start;
+}
+.details .contentContainer .container.copyContainer .detail.story .copy {
+  height: 16.4em;
+  margin-top: 0.35em;
+  overflow: hidden;
+}
+.details .contentContainer .container.copyContainer .detail.story .copy:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 2em;
+  background: linear-gradient(rgba(0, 153, 184, 0), #0099b8 90%);
+}
+.details .contentContainer .container.copyContainer .detail .label {
+  position: relative;
+  color: white;
+  flex-grow: 1;
+  font-family: "SoleilBold";
+  font-weight: 700;
+}
+.details .contentContainer .container.copyContainer .detail .copy {
+  position: relative;
+  width: 13.6em;
+  color: white;
+  font-size: 1.6em;
+  font-family: "SoleilLight";
+  font-weight: 300;
+}
+.details .contentContainer .container.buttonContainer {
+  padding-left: 2.7em;
+  padding-right: 2.7em;
+  padding-bottom: 4.4em;
+  box-sizing: border-box;
+}
+.details .contentContainer .container.buttonContainer .separator {
+  position: relative;
+  height: 1px;
+  width: 100%;
+  background-color: white;
+}
+.details .contentContainer .container.buttonContainer .button {
+  position: relative;
+  padding: 0.1em;
+  box-sizing: border-box;
+  margin-top: 2.8em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
+}
+.details .contentContainer .container.buttonContainer .button .label {
+  color: white;
+  margin-right: 1em;
+  line-height: 1.125;
+}
+.details .contentContainer .container.buttonContainer .button .icon.arrowIcon {
+  width: 0.74em;
+  height: 1.2em;
+  background-image: url(../img/arrow.png);
+}
+
+.icon {
+  position: relative;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  7% {
+    transform: scale(1.15);
+  }
+  14% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@media screen and (max-width: 1175px) {
+  #wrapper {
+    font-size: 7.5px;
+  }
+  #wrapper .card .icons {
+    top: 1.3em;
+    right: 1.3em;
+  }
+}
+@media screen and (max-width: 880px) {
+  #wrapper {
+    font-size: 6.2px;
+  }
+  #wrapper .card .petadata {
+    padding: 2em 2.66em;
+  }
+  #wrapper .card .petadata .stats {
+    margin-top: 0.66em;
+  }
+}
+@media screen and (max-width: 767px) {
+  #wrapper #pageContainer {
+    width: 320px;
+  }
+
+  #filterContainer {
+    padding: 0em;
+    margin-top: 50px;
+    margin-bottom: 40px;
+  }
+  #filterContainer #filter {
+    width: 100%;
+    height: 58px;
+    padding: 16px;
+  }
+  #filterContainer #filter .labelsContainer .mainLabel {
+    font-size: 18px;
+    line-height: 26px;
+    font-family: SoleilLight;
+    font-weight: 400;
+  }
+  #filterContainer #filter .hintsContainer .icon.dropdownIcon {
+    width: 13px;
+    height: 13px;
+  }
+  #filterContainer #filterItems {
+    width: 100%;
+    font-size: 1.6em;
+  }
+  #filterContainer #filterItems .filterItem {
+    padding: 0.4em 1.8em;
+  }
+  #filterContainer #filterItems .filterItem .label {
+    font-size: 1.8em;
+  }
+
+  #cardsContainer {
+    width: 320px;
+    flex-grow: unset;
+  }
+  #cardsContainer .card {
+    width: 100%;
+    height: 140px;
+    margin-left: 0;
+    margin-right: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  #cardsContainer .card .portrait {
+    height: 100%;
+    flex-basis: 42%;
+  }
+  #cardsContainer .card .portrait img {
+    height: 100%;
+  }
+  #cardsContainer .card .portrait .banner {
+    height: 25px;
+  }
+  #cardsContainer .card .portrait .banner .label {
+    font-family: "SoleilRegular";
+    font-size: 12px;
+  }
+  #cardsContainer .card .petadata {
+    width: calc(100% - 42%);
+    height: 100%;
+    flex-basis: calc(100% - 42%);
+    padding: 14px 37px 30px 14px;
+    max-width: 29.9em;
+  }
+  #cardsContainer .card .petadata .stats {
+    margin-top: 14px;
+    font-weight: 300;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #cardsContainer .card .icons {
+    top: 10px;
+    right: 10px;
+  }
+  #cardsContainer .card .icons .icon.heartIcon {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 3px;
+  }
+  #cardsContainer .card .icons .icon.infoIcon {
+    width: 22px;
+    height: 22px;
+  }
+  #cardsContainer .card .details .contentContainer {
+    padding: 15px;
+    padding-right: 30px;
+    box-sizing: border-box;
+    justify-content: center;
+  }
+  #cardsContainer .card .details .contentContainer .container {
+    padding: 0px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-grow: 1;
+  }
+  #cardsContainer .card .details .contentContainer .container.copyContainer {
+    justify-content: space-between;
+  }
+  #cardsContainer .card .details .contentContainer .detail {
+    margin-bottom: 0em;
+  }
+  #cardsContainer .card .details .contentContainer .detail.story .copy {
+    height: 17px;
+    margin-top: 0em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #cardsContainer .card .details .contentContainer .detail .label {
+    width: 76px;
+    font-size: 14px;
+    line-height: 17px;
+  }
+  #cardsContainer .card .details .contentContainer .copy {
+    font-size: 14px;
+    line-height: 17px;
+  }
+  #cardsContainer .card .details .contentContainer .copy:after {
+    display: none;
+  }
+  #cardsContainer .card .details .buttonContainer {
+    align-items: flex-end !important;
+  }
+  #cardsContainer .card .details .buttonContainer .separator {
+    display: none;
+  }
+  #cardsContainer .card .details .buttonContainer .button {
+    margin-top: 0em;
+  }
+  #cardsContainer .card .details .buttonContainer .button .label {
+    margin-right: 8px;
+    font-size: 14px;
+    line-height: 17px;
+  }
+  #cardsContainer .card .details .buttonContainer .button .icon {
+    width: 12px;
+    height: 12px;
+  }
+
+  h2 {
+    font-size: 20px;
+    line-height: 24px;
+    font-family: SoleilBold;
+  }
+
+  h4 {
+    font-size: 16px;
+    line-height: 18px;
+  }
+
+  h6 {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}
+
+/*# sourceMappingURL=style.css.map */

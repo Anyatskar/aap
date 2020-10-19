@@ -1,0 +1,875 @@
+//vars
+$brandBlue:#00BFDA;
+$brandBlue2:#0099B8;
+$brandYellow:#FFCC1B;
+$brandGrey:#B3B3B3;
+
+//modules
+@import "modules";
+
+
+//general
+html,
+body {
+  position:absolute;
+  top:0px;
+  left:0px;
+  height:100%;
+  width:100%;
+}
+
+html {
+  font-size:100px;
+  font-family:SoleilRegular;
+}
+
+h2 {
+  color:$brandBlue;
+  font-size:3.2em;
+  line-height:1.25;
+  font-family:SoleilExtraBold;
+  font-weight:800;
+}
+
+h4 {
+  color:black;
+  font-size:2.0em;
+  line-height:1.6;
+  font-family:SoleilBold;
+  font-weight:700;
+}
+
+h6 { //also h4 tho?
+  color:black;
+  font-size:2.0em;
+  line-height:1.3;
+  font-family:SoleilLight; 
+  font-weight: 300;
+}
+
+h5 { 
+  color:black;
+  font-size:1.6em;
+  line-height:1.9;
+  font-family:SoleilBold;
+  font-weight:700;
+}
+
+
+//elements
+#wrapper {
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+  @include column();
+  font-size:10px;
+
+  #pageContainer {
+    position:relative;
+    width:117.3em;
+    max-width:140em;
+    height:100%;
+    @include column();
+    justify-content:flex-start;
+  }
+}
+
+#filterContainer {
+  position:relative;
+  width:100%;
+  padding:0em 1.2em;
+  box-sizing:border-box;
+  margin-top:9em;
+  margin-bottom:4em;
+  flex-shrink:0;
+  z-index:9;
+
+  &.active {
+    #filter {
+      .optionalLabel {
+        opacity:0;
+        pointer-events:none;
+      }
+
+      .sublabel {
+        display:none;
+      }
+    }
+
+    .dropdownIcon {
+      transform:rotate(180deg);
+    }
+    
+    #filterItems {
+      opacity:1;
+      pointer-events:auto;
+      transform:translate(0em, 1em);
+
+      .filterItem:first-child {
+        color:$brandGrey;
+      }
+    }
+  }
+
+  #filter {
+    position:relative;
+    width:36.8em;
+    height:5.8em;
+    border-radius:0.6em;
+    padding-top:0.4em;
+    padding-bottom:0.6em;
+    padding-left:1.6em;
+    padding-right:1em;
+    border:1px solid $brandGrey;
+    box-sizing:border-box;
+    @include row();
+    justify-content:space-between;
+
+    .labelsContainer {
+      position:relative;
+      @include column();
+      align-items:flex-start;
+
+      .sublabel {
+        position:relative;
+        color:$brandGrey;
+        font-size:1.4em;
+        line-height:1.6;
+        font-family:"SoleilBold";
+        font-weight:700;
+      }
+
+      .mainLabel {
+        position:relative;
+        color:$brandGrey;
+        font-size:2em;
+        line-height:1.3;
+
+        &.active {
+          color:black;
+        }
+      }
+    }
+
+    .hintsContainer {
+      position:relative;
+      @include row();
+
+      .optionalLabel {
+        position:relative;
+        color:$brandGrey;
+        margin-right:1.1em;
+        font-size:1.4em;
+        line-height:1.6;
+        font-family:"SoleilBold";
+        font-weight:700;
+        transition:opacity 0.4s ease;
+      }
+
+      .icon {
+        width:1.3em;
+        height:1.3em;
+        transition:transform 0.4s ease;
+        will-change:transform;
+
+        &.dropdownIcon {
+          background-image:url(../img/dropdown.png);
+        }
+      }
+    }
+
+  }
+
+  #filterItems {
+    position:absolute;
+    width:36.8em;
+    background-color:white;
+    border-radius:0.6em;
+    padding:1em 0em;
+    border:1px solid #DFDFDF;
+    box-sizing:border-box;
+    box-shadow:0px 2px 4px $brandGrey;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.4s ease, transform 0.4s ease;
+
+    .filterItem {
+      position:relative;
+      width:100%;
+      height:auto; 
+      padding:0.8em 1.6em;
+      box-sizing:border-box;
+      @include row();
+      justify-content:space-between;
+
+      &:hover {
+        background-color:#F2F2F2;
+
+        .label {
+          font-family:"SoleilRegular";
+          font-weight:normal;
+        }
+      }
+
+      &.active {
+
+        &:not(:first-child) {
+          .label {
+            color:$brandBlue;
+          }
+        }
+
+        .icon {
+          &.checkmarkIcon {
+            opacity:1;
+          }
+        }
+      }
+
+      .label {
+        position:relative;
+        font-size:2em;
+        line-height:1.3;
+        font-family:"SoleilLight";
+        pointer-events:none; //note: just so cursor isn't text (coulda set cursor to default or pointer, too)
+      }
+
+      .icon {
+        width:1.3em;
+        height:1.3em;
+        transition:transform 0.4s ease;
+        will-change:transform;
+        opacity:0;
+        pointer-events:none;
+        transition:opacity 0.5s ease;
+
+        &.checkmarkIcon {
+          background-image:url(../img/checkmark.png);
+        }
+      }
+
+    }
+  }
+}
+
+#cardsContainer {
+  position:relative;
+  height:auto;
+  width:100%;
+  @include row();
+  align-items:flex-start;
+  justify-content:flex-start;
+  flex-wrap:wrap; 
+  flex-grow:1;
+  overflow:auto;
+  //hide scrollbar (to account for manual mouse scrollbar appearing and pushing content)
+  -ms-overflow-style: none;  //IE and Edge
+  scrollbar-width: none;  //Firefox
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .card {
+    position:relative;
+    width:36.7em;
+    height:55.6em;
+    margin:.0em 1.2em 2.4em 1.2em; //note: ends of cards on either side prolly shouldn't have margins (fencepost later)
+    @include column();
+    box-shadow:.0em .4em 1.0em rgba(106,106,106,0.19);
+    border-radius:.2em;
+    overflow:hidden;
+
+    &:hover {
+      background-color:#F9F9F9;
+      box-shadow:.0em .2em .2em rgba(106, 106, 106, 0.14);
+    }
+
+    .portrait {
+      position:relative;
+      width:100%;
+      flex-grow:0;
+      flex-shrink:0;
+      flex-basis:63%;
+      overflow:hidden;
+
+      img {
+        position:absolute;
+        width:100%;
+      }
+
+      .banner {
+        position:absolute;
+        bottom:.0em;
+        width:100%;
+        height:3.0em;
+        @include row();
+        opacity:0;
+        pointer-events:none;
+        will-change:transform;
+        transform-origin:bottom;
+        transition:transform 0.5s ease;
+        animation:pulse 4s infinite ease-in-out 1s;      
+
+        &.active {
+          opacity:1;
+          pointer-events:auto;
+        }
+
+        &.act {
+          background-color:$brandYellow;
+        }
+        &.adopted {
+          background-color:$brandBlue;
+
+          .label {
+            color:white;
+          }
+        }
+
+        .label {
+          position:relative;
+        }
+      }
+    }
+
+    .petadata {
+      position:relative;
+      width:100%;
+      padding:1.5em 2.5em .0em 2.5em;
+      box-sizing:border-box;
+      flex-grow:0;
+      flex-shrink:0;
+      flex-basis:calc(100% - 63%);
+      cursor:default;
+
+      .shorten {
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+
+      .stats {
+        margin-top:1.0em;
+
+        .extra {
+          color:red;
+        }
+      }
+
+      .location {
+        
+      }
+    }
+
+    .icons {
+      position:absolute;
+      top:2.0em;
+      right:2.0em;
+      @include column();
+
+      .icon {
+        transition:background-image 0.5s ease;
+
+        &.heartIcon {
+          width:2.5em;
+          height:2.5em;
+          margin-bottom: 0.2em;
+          background-image:url(../img/heart_not_favourited.png);
+
+          &.active,
+          &:hover {
+            background-image:url(../img/heart_favourited.png);
+          }
+        }
+        &.infoIcon {
+          width:2.3em;
+          height:2.3em;
+
+          &.active {
+            .animationContainer {
+              transform:scale(55);
+
+              &.blue {
+                background-color:$brandBlue2;
+                opacity:1;
+              } 
+              &.grey {
+                background-color:grey;
+              }
+            }
+
+            .iIcon {
+              opacity:0;
+              pointer-events:none;
+            }
+          }
+
+          .animationContainer {
+            position:absolute;
+            top:0em;
+            right:0em;
+            width:100%;
+            height:100%;
+            border-radius:50%;
+            pointer-events:none;
+            transform:scale(0);
+            transition:transform 0.6s ease, opacity 0.6s ease-in-out;
+
+            &.blue {
+              background-color:$brandBlue2;
+              opacity:0;
+            } 
+            &.grey {
+              background-color:grey;
+            }
+          }
+
+          .iIcon {
+            position:absolute;
+            top:0em;
+            right:0em;
+            width:100%;
+            height:100%;
+            background-image:url(../img/info.png);
+            background-size:88%;
+            opacity:1;
+            pointer-events:auto;
+            transition:opacity 0.5s ease;
+          }
+        }
+      }
+    }
+
+  }
+}
+
+.details {
+  position:absolute;
+  top:0em;
+  left:0em;
+  height:100%;
+  width:100%;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.5s ease;
+
+  &.active {
+    opacity:1;
+    pointer-events:auto;
+
+    .contentContainer {
+      opacity:1;
+      pointer-events:auto;
+      transition-delay:0.25s;
+      transform:translate(0em,0em);
+    }
+  }
+
+  .icon {
+    &.closeIcon {
+      position:absolute;
+      top:0em;
+      right:0em;
+      width:2.2em;
+      height:2.2em;
+      margin-top:2em;
+      margin-right:2em;
+      background-image:url(../img/close.png);
+    }
+  }
+
+  .contentContainer {
+    position:absolute;
+    top:0em;
+    left:0em;
+    width:100%;
+    height:100%;
+    @include column();
+    align-items:flex-start;
+    justify-content:space-between;
+    opacity:0;
+    pointer-events:none;
+    transform:translate(0em,1.5em);
+    transition:opacity 0.5s ease 0s, transform 0.5s ease;
+
+    .container {
+      position:relative;
+      width:100%;
+
+      &.copyContainer {
+        position:relative;
+        padding:6.2em 2.7em 2.5em 2.7em;
+        box-sizing:border-box;
+        @include column();
+        align-items:flex-start;
+
+        .detail { 
+          position:relative;
+          width:100%;
+          margin-bottom:2.5em;
+          @include row();
+
+          &:last-child {
+            margin-bottom:0em;
+          }
+
+          &.story {
+            align-items:flex-start;
+
+            .copy {
+              height:16.4em;
+              margin-top:0.35em; //hack; sorry
+              overflow:hidden;
+
+              &:after {
+                content:"";
+                position:absolute;
+                bottom:0;
+                right:0;
+                width:100%;
+                height:2em;
+                background:linear-gradient(rgba(0,153,184, 0), #0099b8 90%); //note: gradient not per comp, but multiline ellipses v hard to do well, esp in css; think it looks nice
+              }
+            }
+          }
+
+          .label {
+            position:relative;
+            color:white;
+            flex-grow:1;
+            font-family:"SoleilBold";
+            font-weight:700;
+          }
+
+          .copy {
+            position:relative;
+            width:13.6em;
+            color:white;
+            font-size:1.6em;
+            font-family:"SoleilLight";
+            font-weight:300;
+          }
+
+        }
+      }
+
+      &.buttonContainer {
+        padding-left:2.7em;
+        padding-right:2.7em;
+        padding-bottom:4.4em;
+        box-sizing:border-box;
+
+        .separator {
+          position:relative;
+          height:1px;
+          width:100%;
+          background-color:white;
+        }
+
+        .button {
+          position:relative;
+          padding:0.1em;
+          box-sizing:border-box;
+          margin-top: 2.8em;
+          @include row();
+          justify-content: flex-start;
+
+          .label {
+            color:white;
+            margin-right: 1em;
+            line-height: 1.125;
+          }
+
+          .icon {
+            &.arrowIcon {
+              width: 0.74em;
+              height: 1.2em;
+              // box-sizing:border-box;
+              background-image:url(../img/arrow.png);
+              // background-size:contain;
+            }
+          }
+        }
+      }
+
+    }
+  }
+}
+
+.icon {
+  position:relative;
+  @include contain();
+}
+
+
+//animations
+@keyframes pulse {
+  0% {
+      transform:scale(1);
+  }
+  7% {
+      transform:scale(1.15);
+  }
+  14% {
+      transform:scale(1);
+  }
+  100% {
+      transform:scale(1);
+  }
+}
+
+
+
+//breakpoints 
+
+
+//desktop (smaller)
+//l
+@media screen and (max-width:1175px) {
+
+  #wrapper {
+    font-size:7.5px;
+
+    .card {
+      .icons {
+        top:1.3em;
+        right:1.3em;
+      }
+    }
+  }
+}
+
+//tablet
+//s/m
+@media screen and (max-width:880px) {
+
+  #wrapper {
+    font-size:6.2px;
+
+    .card {
+      .petadata {
+        padding:2em 2.66em;
+
+        .stats {
+          margin-top:0.66em;
+        }
+      }
+    }
+  }
+}
+
+//mobile
+//xs
+@media screen and (max-width:767px) {
+
+  #wrapper {
+    #pageContainer {
+      width:320px;
+    }
+  }
+
+  #filterContainer {
+    padding:0em;
+    margin-top:50px;
+    margin-bottom:40px;
+
+    #filter {
+      width:100%;
+      height:58px;
+      padding:16px;
+
+      .labelsContainer {
+
+        .mainLabel {
+          font-size:18px;
+          line-height:26px;
+          font-family:SoleilLight;
+          font-weight:400;
+        }
+      }
+
+      .hintsContainer {
+        .icon.dropdownIcon {
+          width:13px;
+          height:13px;
+        }
+      }
+    }
+
+    #filterItems {
+      width:100%;
+      font-size:1.6em;
+
+      .filterItem {
+        padding: 0.4em 1.8em;
+
+        .label {
+          font-size: 1.8em;
+        }
+      }
+    }
+  }
+
+  #cardsContainer {
+    width:320px;
+    flex-grow: unset;
+
+    .card {
+      width:100%;
+      height:140px;
+      margin-left:0;
+      margin-right:0;
+      @include row();
+
+      .portrait {
+        height:100%;
+        flex-basis:42%;
+
+        img {
+          height:100%;
+        }
+
+        .banner {
+          height: 25px;
+
+          .label {
+            font-family: 'SoleilRegular';
+            font-size: 12px;
+          }
+        }
+      }
+
+      .petadata {
+        width:calc(100% - 42%);
+        height:100%;
+        flex-basis:calc(100% - 42%);
+        padding:14px 37px 30px 14px; //padding:14px 21px 30px 14px;
+        max-width: 29.9em; //helps ff browser not overflow container without forming ...
+
+        .stats {
+          margin-top:14px;
+          font-weight:300;
+          white-space:nowrap;
+          overflow:hidden;
+          text-overflow:ellipsis;
+        }
+      }
+
+      .icons {
+        top: 10px;
+        right: 10px;
+
+        .icon {
+          &.heartIcon {
+            width: 24px;
+            height: 24px;
+            // width:19px;
+            // height:19px;
+            margin-bottom: 3px;
+          }
+          &.infoIcon {
+            width: 22px;
+            height: 22px;
+            // width:17px;
+            // height:17px;
+          }
+        }
+      }
+
+      .details {
+        .contentContainer {
+          padding:15px;
+          padding-right:30px;
+          box-sizing:border-box;
+          justify-content:center;
+
+          .container {
+            padding:0px;
+            box-sizing:border-box;
+            display:flex;
+            justify-content:flex-start;
+            align-items:center;
+            flex-grow:1;
+
+            &.copyContainer {
+              justify-content:space-between;
+            }
+          }
+
+          .detail {
+            margin-bottom:0em;
+
+            &.story {
+              .copy {
+                height:17px;
+                margin-top:0em;
+                white-space:nowrap;
+                overflow:hidden;
+                text-overflow:ellipsis;
+              }
+            }
+
+            .label {
+              width:76px;
+              font-size:14px;
+              line-height:17px;
+            }
+          }
+
+          .copy {
+            font-size:14px;
+            line-height:17px;
+
+            &:after {
+              display:none;
+            }
+          }
+        }
+
+        .buttonContainer {
+          align-items:flex-end !important;
+
+          .separator {
+            display:none;
+          }
+
+          .button {
+            margin-top:0em;
+
+            .label {
+              margin-right:8px;
+              font-size:14px;
+              line-height:17px;
+            }
+
+            .icon {
+              width:12px;
+              height:12px;
+            }
+
+          }
+
+        }
+      }
+    }
+  }
+
+  h2 {
+    font-size:20px;
+    line-height:24px;
+    font-family:SoleilBold;
+  }
+
+  h4 {
+    font-size:16px;
+    line-height:18px;
+  }
+
+  h6 {
+    font-size:14px;
+    line-height:17px;
+  }
+}

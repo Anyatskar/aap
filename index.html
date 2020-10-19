@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+        <title>AaP</title> <!-- tab title -->
+        <link type="text/css" rel="stylesheet" href="css/reset.css" /> <!-- vanilla flavoring css -->
+        <link type="text/css" rel="stylesheet" href="css/font.css" /> <!-- font css -->
+        <link type="text/css" rel="stylesheet" href="css/style.css" /> <!-- custom css -->
+        <script type="module" src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script> <!-- alpine js -->
+        <script nomodule src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine-ie11.min.js" defer></script> <!-- alpine for ie -->
+        <script src="js/script.js"></script> <!-- custom js -->
+    </head>
+
+    <body>
+        <section id="wrapper">
+
+            <section id="pageContainer">
+                <div id="filterContainer" x-data="filter()" x-init="$watch('selectedFilter', function(){})" :class="{ 'active': droppedDown }">
+                    <div id="filter" @click="droppedDown = !droppedDown" @click.away ="droppedDown = false">
+                        <div class="labelsContainer">
+                            <div class="sublabel" x-show.transition="selectedFilter != 'Filter'">Filter</div>
+                            <div class="mainLabel" x-text="selectedFilter" :class="{ 'active': selectedFilter !== 'Filter' }"></div>
+                        </div>
+                        <div class="hintsContainer">
+                            <!-- "select field with selected item" from comp -->
+                            <div class="optionalLabel optional" x-show.transition="selectedFilter != 'Filter'">Optional</div>
+                            <div class="icon dropdownIcon"></div>
+                        </div>
+                    </div>
+                    <div id="filterItems">
+                        <!-- note: topmost filter item simply for resetting demo  -->
+                        <div class="filterItem" @click="$dispatch('select-filter', { dropdownFilter: 'Filter' }); selectedFilter = 'Filter'" :class="{ 'active': selectedFilter == 'Filter' }">
+                            <div class="label">Filter</div>
+                        </div>
+                        <div class="filterItem" @click="$dispatch('select-filter', { dropdownFilter: 'Act quickly' }); selectedFilter = 'Act quickly'" :class="{ 'active': selectedFilter == 'Act quickly' }">
+                            <div class="label">Act quickly</div>
+                            <div class="icon checkmarkIcon"></div>
+                        </div>
+                        <div class="filterItem" @click="$dispatch('select-filter', { dropdownFilter: 'Special needs' }); selectedFilter = 'Special needs'" :class="{ 'active': selectedFilter == 'Special needs' }">
+                            <div class="label">Special needs</div>
+                            <div class="icon checkmarkIcon"></div>
+                        </div>
+                        <div class="filterItem" @click="$dispatch('select-filter', { dropdownFilter: 'Adopted' }); selectedFilter = 'Adopted'" :class="{ 'active': selectedFilter == 'Adopted' }">
+                            <div class="label">Adopted</div>
+                            <div class="icon checkmarkIcon"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="cardsContainer"
+                    x-data="petsData()"
+                    x-init="getPets()"
+                    @select-filter.window="dropdownSelected = $event.detail.dropdownFilter">
+
+                    <template x-for="pet in pets" :key="pet">
+                        <div class="card"  @click.away="if(detailed === pet.result.details.pet_id) { detailed = null }" x-show=
+                                                            "(dropdownSelected === 'Act quickly' && pet.result.details.act_quickly) ||
+                                                             (dropdownSelected === 'Special needs' && pet.result.details.special_needs ) || 
+                                                             (dropdownSelected === 'Adopted' && pet.result.details.adopted) ||
+                                                             (dropdownSelected === 'Filter')">
+                            <div class="portrait">
+                                <img x-bind:src="pet.large_results_photo_url"/>
+                                <div class="banner act" :class="{ 'active': pet.result.details.act_quickly }">
+                                    <h5 class="label">Act Quickly</h5>
+                                </div>
+                                <div class="banner adopted" :class="{ 'active': pet.result.details.adopted }">
+                                    <h5 class="label">Adopted</h5>
+                                </div>
+                            </div>
+                            <div class="petadata">
+                                <h2 class="name shorten" x-text="pet.result.name"></h2>
+                                <h4 class="breed shorten" x-text="pet.result.breed"></h4>
+                                <h6 class="stats">
+                                    <span class="standard" x-text="pet.result.stats"></span><span class="joiner" :class="{ 'active': pet.result.details.stats_extra != null }">, </span><span class="extra" x-text="pet.result.details.stats_extra"></span>
+                                </h6>
+                                <h6 class="location" x-text="pet.result.location"></h6>
+                            </div>
+                            <div class="icons">
+                                <div class="icon heartIcon" @click="pet.result.favourited = !pet.result.favourited; detailed = null" :class="{ 'active': pet.result.favourited }"></div>
+                                <div class="icon infoIcon" @click="detailed = pet.result.details.pet_id" :class="{ 'active': detailed === pet.result.details.pet_id }">
+                                    <div class="animationContainer grey"></div>
+                                    <div class="animationContainer blue"></div>
+                                    <div class="icon iIcon"></div>
+                                </div>
+                            </div>
+
+                            <div class="details" :class="{ 'active': detailed === pet.result.details.pet_id }">
+
+                                <div class="contentContainer">
+                                    <div class="container copyContainer">
+                                        <div class="detail color" x-show="pet.result.details.color">
+                                            <h5 class="label">Color</h5>
+                                            <h6 class="copy" x-text="pet.result.details.color"></h6>
+                                        </div>
+                                        <div class="detail size" x-show="pet.result.details.size">
+                                            <h5 class="label">Size</h5>
+                                            <h6 class="copy" x-text="pet.result.details.size"></h6>
+                                        </div>
+                                        <div class="detail story" x-show="pet.result.details.description">
+                                            <h5 class="label">Story</h5>
+                                            <h6 class="copy" x-text="pet.result.details.description"></h6>
+                                        </div>
+                                    </div>
+                                    <div class="container buttonContainer">
+                                        <div class="separator"></div>
+                                        <div class="button">
+                                            <h5 class="label">Learn more</h5>
+                                            <div class="icon arrowIcon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="icon closeIcon" @click="detailed = null"></div>
+
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+        </section>
+
+    </body>
+
+</html>
