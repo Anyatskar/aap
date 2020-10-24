@@ -369,6 +369,18 @@ h5 {
         .extra {
           color:red;
         }
+
+        .joiner {
+          opacity:0;
+          pointer-events:none;
+          transition:transform 0.2s ease;
+
+          &.active {
+            opacity:1;
+            pointer-events:auto;
+          }
+        }
+        
       }
     }
 

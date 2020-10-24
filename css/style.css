@@ -323,6 +323,15 @@ h5 {
 #cardsContainer .card .petadata .stats .extra {
   color: red;
 }
+#cardsContainer .card .petadata .stats .joiner {
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+#cardsContainer .card .petadata .stats .joiner.active {
+  opacity: 1;
+  pointer-events: auto;
+}
 #cardsContainer .card .interestedIcons {
   position: absolute;
   top: 2em;

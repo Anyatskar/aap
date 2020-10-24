@@ -1,172 +1,211 @@
-/**
- * fetches pets data for all pets
- * @return {object}   queries pet_search resource db for info on all available pets in given area
- * @author ayatskar
- * @date   10-16-2020
- */
-function petsData () { //global scope
-	return {
+//goals:
 
-		pets:[], //stores pets data for all pets
-		detailed:null, //saves which specific pet's details are open
-		dropdownSelected:"Filter", //initialized dropdown filter
+//1. fetch data
 
-		//calls to pet_search pets db for data
-		getPets:function () {
-			//create XHR Object
-			var xmlhttp = new XMLHttpRequest;
-			//call the open function, GET-type of request, url, true-asynchronous
-			xmlhttp.open("GET", "https://api.adoptapet.com/search/pet_search?output=json&key=e41b6bf1618d053c31d524d479c14b4y&geo_range=1&city_or_zip=San%20Francisco,%20CA&species=dog", true);
-			//call the onload 
-			var that = this;
-			xmlhttp.onreadystatechange = function() {
-		        //check if the status is ready and ok
-		        if (this.readyState == 4 && this.status === 200) {
-		            //retrieve server response as an object with JSON.parse
-		            //saves object containing relevant ui-display info
-					that.pets = that.formatData(JSON.parse(this.responseText).pets); //formats pets data
-					that.petDetails(); //adds additional details to each pet of pets data
-				}
-			}
-			//call send
-			xmlhttp.send();
-		},
+//2. read data
 
-		//formats original pets data into ui-displayable format
-		formatData:function (data) {
+//3. make Animal objs
 
-			for (var i = 0; i < data.length; i++) {
+//4. display UI
 
-				var datapoint = data[i];
-			
-				var name = datapoint.pet_name;
 
-				var breed = datapoint.primary_breed + (datapoint.secondary_breed ? "/" + datapoint.secondary_breed : "");
 
-				//reformats sex and age into stats info
-				var sex = (datapoint.sex == "m") ? "Male" : "Female";
-				var age = datapoint.age ? datapoint.age : "";
-				age = age.charAt(0).toUpperCase() + age.slice(1);
-				var stats = age ? (sex + ", " + age) : sex;
+var hits = 0;
 
-				//reformats location info
-				var city = datapoint.addr_city;
-				var state = datapoint.addr_state_code;
-				var location = city + ", " + state;
+//Animal obj
+function Animal (id, name, photo, stats, location, breed) {
 
-				//creates new object containing relevant ui-display info
-				var obj = {
-					"name": name,
-					"breed": breed,
-					"stats": stats,
-					"location": location,
-					"details": {},
-					"favourited": false
-				}
+  //properties
+  this.id = id;
+  this.name = name;
+  this.photo = photo;
+  this.stats = stats;
+  this.location = location;
+  this.breed = breed;
+  //other
+  this.favourited = false;
 
-				//creates and adds new attr (result) using above new object
-				datapoint.result = obj;
-			}
+  //methods
+  //fetch further info 
+  this.fetchDetails = function (that) {
+    //db data
+    //call
+    dbUtility("pet_details", "e41b6bf1618d053c31d524d479c14b4y", "&pet_id="+id, function(response, animal) { //args = arg1, arg2, arg3, callback //need keyword this?
+        
+        //decode and use response
+        var dbData = JSON.parse(response).pet;
+        //continue adding to Animals (Animal objs)
+        
+        //add further details to Animal obj
+        var dbTrivialData = trivialDetails(dbData);
+        animal.adopted = dbTrivialData.adopted;
+        animal.act_quickly = dbTrivialData.act_quickly;
+        animal.special_needs = dbTrivialData.special_needs;
+        animal.bonded_pair = dbTrivialData.bonded_pair;
 
-			return data;
-		},
+        animal.size = dbTrivialData.size;
+        animal.color = dbTrivialData.color;
+        animal.description = recodeText(dbTrivialData.description);
+        animal.stats_extra = formatText(dbTrivialData);
 
-		//adds further detail to each pet of pets data
-		petDetails:function () {
-			for (var i = 0; i < this.pets.length; i++) {
-				var pet = this.pets[i];
-				this.getPet(pet.pet_id, i); //retrieves pet data for individual pet
-			}
-		},
+        //requests counter
+        hits++;
+        if(hits == anmlObjs.length) {        	
+        	//note: wait until all calls complete (i.e. until each individual pet has been given additional details from db, or else db queries might not have all finished upon page load and we'd be missing data)
+        	//TODO: handle case when one ajax call never completes, either with an error or gets stuck for a long time or times out after a long time
+        	updateAnmlObjs(anmlObjs);
+        }
+        
+    }, that);
+  }(this); //creates and calls fn
+  //this.fetchDetails(); //or could call fn immediately after, like this
 
-		//calls to pet_details pet db for data
-		getPet:function (id, i) {
-			//create XHR Object
-			var xmlhttp = new XMLHttpRequest;
-			//call the open function, GET-type of request, url, true-asynchronous
-			xmlhttp.open("GET", "https://api.adoptapet.com/search/pet_details?output=json&key=e41b6bf1618d053c31d524d479c14b4y&pet_id="+id, true);
-			//call the onload 
-			var that = this;
-			xmlhttp.onreadystatechange = function() {
-		        //check if the status is ready and ok
-		        if (this.readyState == 4 && this.status === 200) {
-		            //retrieve server response as an object with JSON.parse
-		            var tempDetails = JSON.parse(this.responseText).pet;
-		            //trivially adds data to db, since it naturally didn't contain these flags to show off code!
-		            tempDetails = trivialDb(tempDetails, i);
-		            //creates and adds new attr (details) to attr result
-		            that.pets[i].result.details = that.formatDetails(tempDetails); //updates further pet details object containing relevant ui-display info
-				}
-			}
-			//call send
-			xmlhttp.send();
-		},
+}
 
-		//format extra stats into ui-displayable format
-		formatDetails:function (details) {
-			var statsExtra = null;
-			if(details.special_needs) {
-				statsExtra = "Special needs";
-			}
-			if(details.bonded_pair) {
-				if(statsExtra != null) {
-					statsExtra += ", Bonded pair";
-				} else {
-					statsExtra = "Bonded pair";
-				}
-			}
-			details.stats_extra = statsExtra;
 
-			//housekeeping: replace HTML character references with human-readable chars
-			var description = details.description;
-			if(description != null) {
-				details.description = description.replace(new RegExp('&#39;', 'g'), '\'');
-			}
+//init
+function init () {
+    //db data
+    //call
+    dbUtility("pet_search", "e41b6bf1618d053c31d524d479c14b4y", "&geo_range=1&city_or_zip=San%20Francisco,%20CA&species=dog", function(response) { //args = arg1, arg2, arg3, callback //need keyword this?
+        
+        //decode and use response
+        var dbData = JSON.parse(response).pets;
 
-			return details;
+        //start makin' Animals
+        makeAnimals(dbData);
+
+    });
+}
+
+
+//ajax
+function dbUtility (apiFn, apiKey, apiArgs, callback, animal) {
+
+    var apiArgsString = apiArgs; //TODO: expand to allow for multiple varied api args to be accepted
+
+    //create XHR Object
+    var xmlhttp = new XMLHttpRequest;
+    //call the open function, GET-type of request, url, true-asynchronous
+    xmlhttp.open("GET", "https://api.adoptapet.com/search/"+apiFn+"?output=json&key="+apiKey+apiArgs, true);
+    //call the onload 
+    xmlhttp.onreadystatechange = function() {
+        //check if the status is ready and ok
+        if (this.readyState == 4 && this.status === 200) {
+            //retrieve server response as object
+            if(callback) {
+            	callback(this.responseText, animal);
+            }
+        }
+    }
+    //call send
+    xmlhttp.send();
+}
+
+
+//store all Animals
+var anmlObjs = [];
+function makeAnimals (dbData) {
+
+    //iterate over all animals available in db
+    for (var i = 0; i < dbData.length; i++) {
+        var datapoint = dbData[i];
+
+        //retrieve and reformat data
+
+        //retrieve id
+        var id = datapoint.pet_id;
+
+        //retrieve name
+        var name = datapoint.pet_name;
+
+        //retrieve photo
+        var photo = datapoint.large_results_photo_url;
+
+        //reformat sex and age into stats
+        var sex = (datapoint.sex == "m") ? "Male" : "Female";
+        var age = datapoint.age ? datapoint.age : "";
+        age = age.charAt(0).toUpperCase() + age.slice(1);
+        var stats = age ? (sex + ", " + age) : sex;
+
+        //reformat city and state into location
+        var city = datapoint.addr_city;
+        var state = datapoint.addr_state_code;
+        var location = city + ", " + state;
+
+        //retrieve breed(s)
+        var breed = datapoint.primary_breed + (datapoint.secondary_breed ? "/" + datapoint.secondary_breed : "");
+
+        //construct Animal obj for each animal
+        var anml = new Animal(id, name, photo, stats, location, breed);
+        //store each Animal obj in anmlObjs data structure
+        anmlObjs.push(anml);
+
+
+    }
+    
+}
+
+//adjust db data (for purposes of coding exercise, to demonstrate all requested functionality)
+function trivialDetails (dbData) {
+	//note: database didn't return response that included any hits for the below attributes;
+	//      attributes were either missing or set to false)
+	//      fn: manually set attribute values from db-ed data
+
+	//randomly assign boolean pet states by generating random integer between 1 and 3, inclusive
+	dbData.adopted = randInt(1, 3) === 1;
+	dbData.act_quickly = randInt(1, 3) === 1 && !dbData.adopted; //so banners don't overlay each other
+	dbData.special_needs = randInt(1, 3) === 1;
+	dbData.bonded_pair = randInt(1, 3) === 1;
+
+	return dbData;
+}
+
+//give an integer random number between min (included) and max (included)
+function randInt (min, max) {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+//replace HTML character references with human-readable chars
+function recodeText (text) {
+	if(text != null) {
+		return text.replace(new RegExp('&#39;', 'g'), '\''); 
+	}
+}
+
+//concatenate stats 
+function formatText (data) {
+	var statsExtra = null;
+	if(data.special_needs) {
+		statsExtra = "Special needs";
+	}
+	if(data.bonded_pair) {
+		if(statsExtra != null) {
+			statsExtra += ", Bonded pair";
+		} else {
+			statsExtra = "Bonded pair";
 		}
 	}
+	return statsExtra;
 }
 
-/**
- * trivially adds pet states data to db, since some states were missing and others were all null
- * @param  {object}   tempDetails pet details retrieved from db
- * @param  {number}   i           index
- * @return {[type]}               [description]
- * @author ayatskar
- * @date   10-17-2020
- */
-function trivialDb (tempDetails, i) {
-	//adds pet states to every xth pet card
-	tempDetails.adopted = (i % 8) === 1;
-	tempDetails.act_quickly = (i % 5) === 1 && !tempDetails.adopted; //so banners don't overlay each other
-	tempDetails.special_needs = (i % 6) === 1;
-	tempDetails.bonded_pair = (i % 9) === 1;
-
-	return tempDetails;
+//take anmlObjs from one scope and update it in another
+function updateAnmlObjs (anmlObjs) {
+	document.getElementById('cardsContainer').__x.$data.anmlObjs = anmlObjs;
 }
 
-/**
- * tracks dropdown filter selections
- * @return {object}   object decribing dropdown filter state
- * @author ayatskar
- * @date   10-17-2020
- */
-function filter () {
+
+
+
+
+//Filter obj
+function Filter () {
+
 	return {
-		droppedDown: false, //whether filter dropdown is open
-		selectedFilter: "Filter", //which dropdown option is selected
+	  //properties
+	  selectedFilter: "Filter", //default; stores selected dropdown option
+	  droppedDown: false, //shows whether dropdown open or not
 	}
-}
 
-/**
- * converts px to ems: px represented as ems for element with given fontsize
- * @param  {number}   fontsize font-size in px of the div you're adding something to
- * @param  {number}   px       number of px you want to convert to ems
- * @return {string}            em size of given pixels
- * @author ayatskar
- * @date   10-16-2020
- */
-function getEms (fontsize, px) { //helper fn for programming, since most breakpoints scaled without altering proportions of elements with respect to each other
-	return (px/fontsize+"em");
 }
+var fltrObj = new Filter();
